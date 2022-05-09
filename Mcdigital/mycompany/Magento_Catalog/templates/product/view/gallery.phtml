@@ -1,0 +1,165 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Product media data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ */
+?>
+
+<?php
+$json = $block->getGalleryImagesJson();
+$galleryImages = json_decode($json,true);
+
+?>
+
+
+<div class="custom-product-media">
+    <section class="vertical-center-4 slider">
+        <?php
+        if(count($galleryImages) > 0){
+        foreach($galleryImages as $key => $image) { ?>
+            <div class="image-grid-container">
+                <a href="<?php echo $image['full']; ?>"  data-fancybox="images" target="_blank" class="thumbnail image-zoom" data-caption="<?= __($image['caption']); ?>">
+                    <img id="md_products_slider_<?php echo $key; ?>" title="<?= __($image['caption']); ?>" alt="<?= __($image['caption']); ?>" src="<?php echo $image['img']; ?>">
+                </a>
+            </div>
+        <?php } } ?>
+    </section>
+</div>
+
+<script>
+document.addEventListener('readystatechange', event => {
+
+    if (event.target.readyState === "complete") {
+
+    require([
+        'jquery',
+        'jqueryfancybox',
+        'jqueryslick'
+    ], function (jQuery) {
+
+            jQuery('[data-fancybox="images"]').fancybox({
+                afterLoad : function(instance, current) {
+                  var pixelRatio = window.devicePixelRatio || 1;
+                  if ( pixelRatio > 1.5 ) {
+                    current.width  = current.width  / pixelRatio;
+                    current.height = current.height / pixelRatio;
+                  }
+                },
+                thumbs : {
+                    autoStart   : true,                  // Display thumbnails on opening
+                    hideOnClose : true,                   // Hide thumbnail grid when closing animation starts
+                    parentEl    : '.fancybox-container',  // Container is injected into this element
+                    axis        : 'y'                     // Vertical (y) or horizontal (x) scrolling
+                },
+            });
+
+            var removeSlick = false;
+            var alreadySlick = false;
+
+            jQuery(window).resize(function() {
+                if (screen.width < 768 ) {
+                    if(alreadySlick != true) {
+                        jQuery(".vertical-center-4").slick({
+                            dots: true,
+                            vertical: false,
+                            centerMode: false,
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            arrows:false,
+                            slidesPerRow:1
+                        });
+
+                        removeSlick = true;
+                    }
+                } else {
+                    if(removeSlick == true) {
+                        jQuery(".vertical-center-4").slick('unslick');
+                        removeSlick = false;
+                    }
+                }
+            });
+
+            if (screen.width < 768 ) {
+                if(alreadySlick != true) {
+                    jQuery(".vertical-center-4").slick({
+                        dots: true,
+                        vertical: false,
+                        centerMode: false,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows:false,
+                        slidesPerRow:1
+                    });
+
+                    alreadySlick = true;
+                    removeSlick = true;
+                }
+            } else {
+                if(removeSlick == true) {
+                    jQuery(".vertical-center-4").slick('unslick');
+                    removeSlick = false;
+                    alreadySlick = false;
+                }
+            }
+
+        });
+    }
+});
+
+</script>
+
+<script>
+ require([
+        'jquery',
+        'jqueryfancybox',
+        'sticky',
+        
+    ], function ($) {
+        setTimeout(function(){
+             $('.product-info-main').sticky({
+                container: '.product-view-top-continer'
+            });
+
+            $('.detailed').sticky({
+                container: '.product-view-top-continer'
+            });
+
+            $('.product-wishlist-wrapper').sticky({
+                container: '.product-media-wrapper'
+            });
+        
+        }, 2000);
+        
+    });
+</script>
+
+<!-- <script type="text/x-magento-init">
+    {
+
+        ".product-info-main": {
+                "sticky": {
+                "container": ".product-view-top-continer",
+                "stickAfter": 300
+                
+
+            }
+        },
+
+        ".detailed": {
+                "sticky": {
+                "container": ".product-view-top-continer" 
+                
+            }   
+        }
+
+       
+    }
+</script> -->

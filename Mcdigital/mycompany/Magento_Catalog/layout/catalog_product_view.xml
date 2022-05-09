@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    
+    <body>
+        
+        <referenceContainer name="content">
+            <container name="product.view.top.wrapper" htmlTag="div" htmlClass="product-view-top-wrapper" before="-">
+                <container name="product.view.top.container" htmlTag="div" htmlClass="product-view-top-continer" >
+                    <container name="product.info.main.wrapper" htmlTag="div" htmlClass="product-info-main-wrapper" />
+                    <container name="product.detailed.wrapper" htmlTag="div" htmlClass="product-detailed-wrapper" />
+                    <container name="product.media.wrapper" htmlTag="div" htmlClass="product-media-wrapper">
+                        <container name="product.wishlist.wrapper" htmlTag="div" htmlClass="product-wishlist-wrapper" />
+                    </container>
+                </container>
+            </container>
+
+             <block name="product.info.designer"  template="Magento_Catalog::product/view/designer.phtml" after="product.view.top.wrapper" /> 
+             <block name="product.info.editor.note"  template="Magento_Catalog::product/view/editor-note.phtml" after="product.info.designer" /> 
+             
+
+        </referenceContainer>
+
+        <referenceBlock name="product.info.main">
+            <block name="product.offer"  template="Magento_Catalog::product/view/offer.phtml" after="-"/> 
+            <block name="product.view.stylist"  template="Magento_Catalog::product/view/stylist.phtml" after="product.offer"/> 
+        </referenceBlock>
+
+       <!-- disabled product info block in tab -->
+         <referenceBlock name="breadcrumbs" display="false" />
+         <referenceBlock name="product.info.stock.sku" display="false" />
+         <referenceBlock name="product.info.review" display="false" />
+         <referenceBlock name="view.addto.compare" display="false" />
+
+
+    <!-- disabled tab block in tab -->
+        <referenceBlock name="product.info.details">
+            <block name="product.info.delivery"  template="Magento_Catalog::product/view/delivery.phtml" group="detailed_info">     
+                <arguments>
+                    <argument name="css_class" xsi:type="string">delivery</argument>
+                    <argument name="title" translate="true" xsi:type="string">Delivery</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                </arguments>
+            </block>   
+
+            <block name="product.info.fit"  template="Magento_Catalog::product/view/fit.phtml" group="detailed_info">     
+                <arguments>
+                    <argument name="css_class" xsi:type="string">fit</argument>
+                    <argument name="title" translate="true" xsi:type="string">Fit</argument>
+                    <argument name="sort_order" xsi:type="string">30</argument>
+                </arguments>
+            </block>  
+
+            <block name="product.info.share"  template="Magento_Catalog::product/view/share.phtml" group="detailed_info">     
+                <arguments>
+                    <argument name="css_class" xsi:type="string">share</argument>
+                    <argument name="title" translate="true" xsi:type="string">Share</argument>
+                    <argument name="sort_order" xsi:type="string">40</argument>
+                </arguments>
+            </block>             
+
+        </referenceBlock>
+
+  
+    <!-- add new block in tab -->
+        <referenceBlock name="product.attributes" display="false" />
+        <referenceBlock  name="reviews.tab" display="false" />
+    
+
+
+
+            <move element="page.main.title" destination="product.info.main" before="-"/>
+            <move element="product.info.main" destination="product.info.main.wrapper" before="-" />
+            <move element="product.info.media" destination="product.media.wrapper" after="-" />
+            <move element="product.info.details" destination="product.detailed.wrapper" before="-" />
+            <move element="view.addto.wishlist" destination="product.wishlist.wrapper" before="-" />
+
+
+
+    </body>
+</page>
